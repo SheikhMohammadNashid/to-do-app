@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  todo-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: todo
+      POSTGRES_PASSWORD: todo
+      POSTGRES_DB: tododb
+    volumes:
+      - todo_pgdata:/var/lib/postgresql/data
+    networks:
+      - todo-network
+
+  todo-backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://todo:todo@todo-db:5432/tododb
+    depends_on:
+      - todo-db
+    networks:
+      - todo-network
+
+  todo-frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge
+
+volumes:
+  todo_pgdata:

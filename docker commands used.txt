@@ -1,0 +1,14 @@
+docker run -d --name todo-frontend --network todo-network -p 8080:80 todo-frontend
+
+
+docker run -d --name todo-backend --network todo-network -p 5000:5000 -e DATABASE_URL=postgresql://todo:todo@todo-db:5432/tododb todo-backend
+
+
+docker run -d --name todo-db --network todo-network -e POSTGRES_DB=tododb -e POSTGRES_USER=todo -e POSTGRES_PASSWORD=todo -v todo_pgdata:/var/lib/postgresql/data postgres:15
+
+C:\Users\Mohammad Nashid>docker ps
+CONTAINER ID   IMAGE           COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+e52322afcb20   todo-backend    "python app.py"          4 seconds ago   Up 4 seconds   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp   todo-backend
+698a20bea4de   todo-frontend   "/docker-entrypoint.…"   8 minutes ago   Up 8 minutes   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp       todo-frontend
+568db346face   postgres:15     "docker-entrypoint.s…"   9 minutes ago   Up 9 minutes   5432/tcp                                      todo-db
+
